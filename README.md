@@ -42,7 +42,7 @@ Bu araç **yalnızca eğitim ve yetkili sızma testleri** için geliştirilmişt
 git clone https://github.com/KauelaKawela/vscann
 cd vscann
 python3 Vscann.py
-
+```
 
 
 
@@ -90,3 +90,4 @@ This tool is intended **strictly for educational and authorized penetration test
 git clone https://github.com/KauelaKawela/vscann
 cd vscann
 python3 Vscann.py
+```
