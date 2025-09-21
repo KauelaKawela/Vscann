@@ -24,8 +24,12 @@ def cyan_blue():
     for i, line in enumerate(lines):
         color = color_codes[i % len(color_codes)]
         print(f"\033[38;5;{color}m{line}{reset}")
+     
 def baslatıcı():
-    os.system("clear")
+    if os.name == "nt":
+         os.system("cls")
+    else:
+         os.system("clear")
     cyan_blue()
     secim = input(f"""{tema}
 ======================================================
