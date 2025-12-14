@@ -1,9 +1,12 @@
-import socket
 from settings.set_loging import write_log
+write_log("[#] 'get_local_ip.py' dosyası çalıştırılı")
+
+import socket
 from settings import set_themes as clr
 from func import helper_func as hf
 
 def get_local_ip():
+    write_log("[#] 'get_local_ip()' fonksiyonu çalıştırıldı")
     s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
     try:
         s.connect(("8.8.8.8",80))

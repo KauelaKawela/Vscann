@@ -14,6 +14,3 @@ def get_mac_addr():
 interfaces = os.listdir('/sys/class/net/')
 
 iface, mac = get_mac_addr()
-print(f"Interfaces: {iface}")
-print(f"Mac: {mac}")
-print(interfaces)            

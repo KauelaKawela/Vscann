@@ -1,11 +1,14 @@
+from settings import set_themes as clr
+from settings.set_loging import write_log
+write_log("")
+write_log("[#] 'Vscann.py' dosyası çalıştırılı")
+
 from os import system
 import sys,subprocess,help,os
 from datetime import datetime
 from func import helper_func as hf
-from settings import set_themes as clr
 from settings import set_lang as lang
 from settings import set_opt 
-from settings.set_loging import write_log
 from func.port_scan import pscan_menu as pmenu
 from func.ip_scan import ipscan_menu as ipscan
 
@@ -24,6 +27,7 @@ def Vbanner():
 """)
 
 def MENU(secilmis):
+      write_log("[#] 'MENU()' fonksiyonu çalıştırıldı")
       secim_menusu = {
       "0":hf.cık,
       "1":pmenu.tarama_menusu,
@@ -36,9 +40,12 @@ def MENU(secilmis):
           func()
       else:
            print(f"{clr.k}[!] Geçerli bir değer girin{clr.r}")
-           write_log("[!] Geçerli bir değer girin")
+           write_log("[!] Geçerli bir değer girin (Ana menu)")
+           hf.cık()
                   
 def main():
+    write_log("")
+    write_log("[#] 'main()' fonksiyonu çalıştırıldı")
     system("cls||clear")
     Vbanner()
     try:
@@ -55,19 +62,24 @@ def main():
 {clr.am2}[0] Çıkış
 
 {clr.am3}[$] Seçiminiz: {clr.r}""")
+         write_log(f"[#] [{secim}] seçeneği seçildi (Ana menu)")
          MENU(secim)
     except KeyboardInterrupt as e:
          print(f"{clr.k}[!] İşlem sonlandırıldı{clr.r}")
-         write_log("[!] İşlem sonlandırıldı\n")
+         write_log("[!] İşlem sonlandırıldı")
+         hf.cık()
     except AttributeError as e:
          print(f"{clr.k}[!] Hata: {e}{clr.r}")
-         write_log(f"[!] Hata: {e}\n")
+         write_log(f"[!] Hata: {e} (Ana menu)")
+         hf.cık()
     except TypeError as e:
          print(f"{clr.k}[!] Hatalı girdi türü! Geçerli bir değer girin {clr.r}")
-         write_log("[!] Hatalı girdi türü! Geçerli bir değer girin\n")
+         write_log("[!] Hatalı girdi türü! Geçerli bir değer girin (Ana menu)")
+         hf.cık()
     except Exception as e:
          print(f"{clr.k}[!] Hata: {e}{clr.r}")
-         write_log(f"[!] Hata: {e}\n")
+         write_log(f"[!] Hata: {e} (Ana menu)")
+         hf.cık()
          
 if __name__ == "__main__":
    main()

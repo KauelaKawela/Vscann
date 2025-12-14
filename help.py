@@ -1,6 +1,9 @@
 from settings import set_themes as clr
+from settings.set_loging import write_log
+write_log("[#] 'help.py' dosyası çalıştırılı")
 
 def yardım():
+     write_log("[#] 'yardım()' fonksiyonu çalıştırıldı")
      print(f"""
 {clr.am3}[-] 0- Çalışmayı sonlandırır
 {clr.am4}[-] 1- [Başlangıç] - [Bitiş] port aralığını tarar

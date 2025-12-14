@@ -1,4 +1,6 @@
 from settings.set_loging import write_log
+write_log("[#] 'ipscan_menu.py' dosyası çalıştırılı")
+
 from settings import set_themes as clr
 from os import system
 import Vscann
@@ -6,6 +8,7 @@ from func import helper_func as hf
 from func.ip_scan import ag_taraması as ag_tara
 
 def ipscan_menu(secilmis):
+      write_log("[#] 'ipscan_menu()' fonksiyonu çalıştırıldı")
       secim_menusu = {
       "0":Vscann.main,
       "1":ag_tara.ag_taraması
@@ -19,6 +22,7 @@ def ipscan_menu(secilmis):
            hf.cık()
 
 def ip_taraması():
+     write_log("[#] 'ip_taraması()' fonksiyonu çalıştırıldı")
      system("cls||clear")
      Vscann.Vbanner()
      secim = input(f"""
@@ -31,4 +35,5 @@ def ip_taraması():
 {clr.am4}[0] Geri
 
 {clr.am3}[$] Seçiminiz: {clr.r}""")
+     write_log(f"[#] [{secim}] seçeneği seçildi (Ağ tarama menusu)")
      ipscan_menu(secim)

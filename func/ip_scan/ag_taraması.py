@@ -1,12 +1,15 @@
+from settings.set_loging import write_log
+write_log("[#] 'ag_taraması.py' dosyası çalıştırılı")
+
 import subprocess, ipaddress, time
 from func.ip_scan import get_local_ip as get_ip
-from settings.set_loging import write_log
 from settings import set_themes as clr
 
 #------------------------------------------------------
 #from func.ip_scan import get_mac
 
 def ag_taraması():
+    write_log("[#] 'ag_taraması()' fonksiyonu çalıştırıldı")
     local_ip = get_ip.get_local_ip()
     net = ipaddress.ip_network(local_ip + "/24",strict=False)
     
@@ -47,6 +50,7 @@ def ag_taraması():
     for ip, son_sure in aktif_ip:
         print(f"\t{clr.y}[+] {ip} - Süre: {son_sure}")
         write_log(f"\t[+] {ip} - Süre: {son_sure}")
+    hf.cık()
     #------------------------------------------------------
     #for ip, son_sure, mac, iface in aktif_ip:
         #print(f"\t{clr.y}[+] {ip} - Süre: {son_sure} - Mac: {mac} - Interface: {iface}")

@@ -1,11 +1,14 @@
+from settings.set_loging import write_log
+write_log("[#] 'ping_control.py' dosyası çalıştırıldı")
+
 import subprocess
 from settings import set_themes as clr
 from func import helper_func as hf
-from settings.set_loging import write_log
 
 def ping_kontrol(ip):
+      write_log("[#] 'ping_kontrol()' fonksiyonu çalıştırıldı")
       print(f"\n{clr.s}[#] [{ip}] adresine ping atılıyor..{clr.r}\n")
-      write_log(f"\n[#] [{ip}] adresine ping atılıyor..\n")
+      write_log(f"[#] [{ip}] adresine ping atılıyor..\n")
       try:
               ping_yanıt = subprocess.run(["ping", "-c", "1", ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
               if "1 received" in ping_yanıt.stdout or "bytes from" in ping_yanıt.stdout or "bytes" in ping_yanıt.stdout:
@@ -18,11 +21,11 @@ def ping_kontrol(ip):
                       return True
               else:
                   print(f"\n{clr.k}[!] Hedef cihaz ağda değil veya erişilemez! Çıkılıyor..{clr.r}\n") 
-                  write_log("\n[!] Hedef cihaz ağda değil veya erişilemez! Çıkılıyor..\n")
+                  write_log("[!] Hedef cihaz ağda değil veya erişilemez! Çıkılıyor..\n")
                   print(ping_yanıt.stdout + ping_yanıt.stderr)
                   write_log(ping_yanıt.stdout + ping_yanıt.stderr)
                   hf.cık()
       except Exception as e:
             print(f"{clr.k}[!] Ping hatası: {e}{clr.r}")
-            write_log(f"[!] Ping hatası: {e}\n")
-            return False
+            write_log(f"[!] Ping hatası: {e}")
+            hf.cık()

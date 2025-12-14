@@ -1,6 +1,9 @@
-import json
-import os
 from settings.set_loging import write_log
+write_log("[#] 'set_themes.py' dosyası çalıştırılı")
+
+import json
+from os import system
+import os
 
 CONFIG_PATH = "config.json"
 DEFAULT_THEME = "mavi"
@@ -44,9 +47,12 @@ temalar = {
 }
 
 def load_config():
+    write_log("[#] 'load_config()' fonksiyonu çalıştırıldı [set_themes.py]")
     """Config dosyasını oku, yoksa oluştur"""
     if not os.path.exists(CONFIG_PATH):
         save_config({"theme": DEFAULT_THEME})
+        write_log("[#] 'config.json' dosyası oluşturuldu")
+        write_log("[#] 'theme': 'DEFAULT_THEME' olarak atandı")
     with open(CONFIG_PATH, "r") as f:
         try:
             data = json.load(f)
@@ -58,6 +64,7 @@ def load_config():
 
 
 def save_config(new_data: dict):
+    write_log("[#] 'save_config()' fonksiyonu çalıştırıldı [set_themes.py]")
     """Config'teki mevcut veriyi koruyarak güncelle"""
     data = {}
     if os.path.exists(CONFIG_PATH):
@@ -71,13 +78,14 @@ def save_config(new_data: dict):
         json.dump(data, f, indent=4)
 
 def tema_degis(secim):
+    write_log("[#] 'tema_degis()' fonksiyonu çalıştırıldı")
     secilen_numaralar = {
         "1": "mavi", "2": "turuncu", "3": "sarı",
         "4": "yesil", "5": "mor", "6": "kırmızı", "7": "beyaz"
     }
     secilen = secilen_numaralar.get(secim, DEFAULT_THEME)
     save_config({"theme": secilen})
-    print(f"{am6}[#] {secilen.upper()} teması seçildi")
+    print(f"{s}[#] {secilen.upper()} teması seçildi{r}")
     write_log(f"[#] {secilen.upper()} teması seçildi\n")
     return temalar[secilen]
 
@@ -97,6 +105,7 @@ y = tema["y"]
 r = tema["r"]
 
 def tema_control():
+    write_log("[#] 'tema_control()' fonksiyonu çalıştırıldı")
     tema_secimi = input(f"""
 {am4}[1] Mavi (Varsayılan)
 {am3}[2] Turuncu
@@ -107,4 +116,6 @@ def tema_control():
 {am4}[7] Beyaz
 
 {am5}[$] Seçiminiz: {r}""")
-    return tema_degis(tema_secimi)
+    tema_degis(tema_secimi)
+    input(f"\n{s}Bir tuşa basın..{r}")
+    system("python Vscann.py||python3 Vscann.py")

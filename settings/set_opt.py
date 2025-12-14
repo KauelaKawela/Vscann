@@ -1,13 +1,16 @@
+from settings.set_loging import write_log
+write_log("[#] 'set_opt.py' dosyası çalıştırılı")
+
 from settings import set_raminfo as sri
 from settings import set_loging as log_f
 from settings import set_themes as clr
 from settings import set_lang as lang
-from settings.set_loging import write_log
 from func import helper_func as hf
 from os import system
 import Vscann
 
 def AYAR_SECİM(secim):
+      write_log("[#] 'AYAR_SECİM()' fonksiyonu çalıştırıldı")
       ayarlarss = {
       "0":Vscann.main,
       "1":lang.dil_control,
@@ -30,11 +33,12 @@ kayıt = (f"{clr.y}Açık{clr.r}" if kaydetme==True else f"{clr.k}Kapalı{clr.r}
 ram_bilgisi = (f"{clr.y}Açık{clr.r}" if rambilgi==True else f"{clr.k}Kapalı{clr.r}")   
 
 def ayarlar():
+    write_log("[#] 'ayarlar()' fonksiyonu çalıştırıldı")
     system("cls||clear")
     Vscann.Vbanner()
     set_secim = input(f"""
 {clr.am6}======================================================
-{clr.am6}                ███ AYARLAR ███       
+{clr.am6}                 ███ AYARLAR ███       
 {clr.am7}======================================================
 
 {clr.am6}[1] Dil {clr.r}[{clr.s}{lang.dil}{clr.r}]
@@ -45,4 +49,5 @@ def ayarlar():
 {clr.am2}[0] Geri{clr.r}
 
 {clr.am3}[$] Seçiminiz: {clr.r}""")
-    return AYAR_SECİM(set_secim)
+    write_log(f"[#] [{set_secim}] seçeneği seçildi (Ayarlar)")
+    AYAR_SECİM(set_secim)

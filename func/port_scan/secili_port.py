@@ -1,14 +1,17 @@
+from settings.set_loging import write_log
+write_log("[#] 'secili_port.py' dosyası çalıştırılı")
+
 import time
 from func.port_scan import ping_control as ping
 from func.port_scan import port_taraması as p_tsı
 from func import helper_func as hf
 from settings import set_themes as clr
-from settings.set_loging import write_log
 
 acık_port=p_tsı.acık_port
 port_list=[]
 
 def secili_port():
+        write_log("[#] 'secili_port()' fonksiyonu çalıştırıldı")
         hedef_ip=input(f"{clr.am}[$] Hedef IP adresi: {clr.r}") 
         write_log(f"[$] Hedef IP adresi: {hedef_ip}")
         ping.ping_kontrol(hedef_ip)
@@ -56,3 +59,5 @@ def secili_port():
             for port, servis,son_time,banner in acık_port:
                 print(f"\t\033[32m[-] Port:{clr.r} {port} - \033[32mServis:{clr.r} {servis} - \033[32mSüre:{clr.r} {son_time} - \033[32mBanner:{clr.r} {banner}")
                 write_log(f"\t[-] Port: {port} - Servis: {servis} - Süre: {son_time} - Banner: {banner}")
+                
+        write_log("======================================================")

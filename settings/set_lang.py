@@ -1,15 +1,22 @@
+from settings.set_loging import write_log
+write_log("[#] 'set_lang.py' dosyası çalıştırılı")
+
 import json
 import os
 from settings import set_themes as clr
-from settings.set_loging import write_log
+from settings import set_themes as clr
+from os import system
 
 CONFIG_PATH = "config.json"
 DEFAULT_LANG = "tr"
 
 def load_config():
+    write_log("[#] 'load_config()' fonksiyonu çalıştırıldı [set_lang.py]")
     """Config dosyasını oku, yoksa oluştur"""
     if not os.path.exists(CONFIG_PATH):
         save_config({"lang": DEFAULT_LANG})
+        write_log("[#] config.json dosyası oluşturuldu")
+        write_log("[#] 'lang': 'DEFAULT_LANG' olarak atandı")
     with open(CONFIG_PATH, "r") as f:
         try:
             data = json.load(f)
@@ -20,6 +27,7 @@ def load_config():
     return data
 
 def save_config(new_data: dict):
+    write_log("[#] 'save_config()' fonksiyonu çalıştırıldı [set_lang.py]")
     """Config'teki mevcut veriyi koruyarak güncelle"""
     data = {}
     if os.path.exists(CONFIG_PATH):
@@ -42,6 +50,7 @@ def DIL_SEC(secim):
 
 
 def dil_control():
+    write_log("[#] 'dil_control()' fonksiyonu çalıştırıldı")
     secim = input(f"""
 {clr.am5}[1] Türkçe (Varsayılan)
 {clr.am4}[2] English
@@ -49,7 +58,10 @@ def dil_control():
 {clr.am2}[4] Français
 
 {clr.am}[$] Seçiminiz: """)
-    return DIL_SEC(secim)
+    DIL_SEC(secim)
+    write_log(f"[#] [{secim}] seçeneği seçildi (Dil)")
+    input(f"\n{clr.s}Bir tuşa basın..{clr.r}")
+    system("python Vscann.py||python3 Vscann.py")
 
 config = load_config()
 dil = config["lang"].upper()

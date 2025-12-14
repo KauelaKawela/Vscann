@@ -1,6 +1,7 @@
 import json,os
-from settings import set_themes as clr
 from datetime import datetime
+from os import system 
+from settings import set_themes as clr
 
 CONFIG_PATH = "config.json"
 DEFAULT_LOGINFO = False
@@ -54,7 +55,9 @@ def loginfo_ackapa():
         yeni_durum = not current
         set_log_info(yeni_durum)
         yeni_yazi = f"{clr.y}Açık{clr.r}" if yeni_durum else f"{clr.k}Kapalı{clr.r}"
-        print(f"{clr.am5}[#] Kaydetme artık {yeni_yazi}.{clr.r}")
+        print(f"{clr.am5}[#] Kaydetme {yeni_yazi}{clr.r}")
+        input(f"\n{clr.s}Bir tuşa basın..{clr.r}")
+        system("python Vscann.py||python3 Vscann.py")
     elif secim == "h":
         print(f"{clr.am3}[!] Değişiklik yapılmadı{clr.r}")
     else:

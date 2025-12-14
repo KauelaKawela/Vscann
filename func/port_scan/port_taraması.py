@@ -1,9 +1,9 @@
+from settings.set_loging import write_log
 import time,socket
 from func import helper_func as hf
 from func.port_scan import get_service_name as gsn
 from func.port_scan import banner_gb as b_gb
 from settings import set_themes as clr
-from settings.set_loging import write_log
 
 acık_port=[]
 
