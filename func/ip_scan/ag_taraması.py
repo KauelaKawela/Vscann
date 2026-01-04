@@ -26,22 +26,9 @@ def ag_taraması():
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
             )
-        son_sure = round(time.time() - bas_sure,5)
         if respose ==0:
-            print(f"{clr.y}[+]{clr.r} {ip} {clr.y}aktif{clr.r} -  {clr.y}Süre:{clr.r} {son_sure}")
-            aktif_ip.append((ip,son_sure))
-    #------------------------------------------------------
-            #iface, mac = get_mac.get_mac_addr()
-            #print(f"{clr.y}[+]{clr.r} {ip} {clr.y}aktif{clr.r} -  {clr.y}Süre:{clr.r} {son_sure} - Mac: {mac} - Interface: {iface}")
-            #aktif_ip.append((ip,son_sure,mac,iface))
-    #------------------------------------------------------
-            
-        else:
-            print(f"{clr.k}[-]{clr.r} {ip} {clr.k}pasif{clr.r} - {clr.k}Süre:{clr.r} {son_sure}")
-    #------------------------------------------------------
-            #print(f"{clr.k}[-]{clr.r} {ip} {clr.k}pasif{clr.r} - {clr.k}Süre:{clr.r} {son_sure} - Mac: {mac} - Interface: {iface}")
-    #------------------------------------------------------
-    
+            aktif_ip.append(ip)
+    #IP taraması bittikten sonra teker teker mac ve interface leri alınıp listeye eklenecek - [] yerine {{},{},{}} gibi saklanacak       
     print(f"\n\t{clr.y}$$--------------Tarama Tamamlandı--------------$${clr.r}") 
     write_log("[#] $$--------------Tarama Tamamlandı--------------$$")
     
@@ -49,11 +36,12 @@ def ag_taraması():
     write_log("\nAktif cihazlar: ")
     for ip, son_sure in aktif_ip:
         print(f"\t{clr.y}[+] {ip} - Süre: {son_sure}")
-        write_log(f"\t[+] {ip} - Süre: {son_sure}")
+        write_log(f"\t[+] {ip}")
     hf.cık()
+    
     #------------------------------------------------------
     #for ip, son_sure, mac, iface in aktif_ip:
-        #print(f"\t{clr.y}[+] {ip} - Süre: {son_sure} - Mac: {mac} - Interface: {iface}")
-        #write_log(f"\t[+] {ip} - Süre: {son_sure} - Mac: {mac} - Interface: {iface}")
+        #print(f"\t{clr.y}[+] {ip} - Mac: {mac} - Interface: {iface}")
+        #write_log(f"\t[+] {ip} - Mac: {mac} - Interface: {iface}")
     #------------------------------------------------------
     

@@ -61,12 +61,12 @@ def raminfo_ackapa():
         yeni_yazi = f"{clr.y}Açık{clr.r}" if yeni_durum else f"{clr.k}Kapalı{clr.r}"
         print(f"{clr.am5}[#] RAM bilgisi {yeni_yazi}{clr.r}")
         write_log(f"[#] RAM bilgisi {yeni_yazi}\n")
-        input(f"\n{s}Bir tuşa basın..{r}")
+        input(f"\n{clr.s}Bir tuşa basın..{clr.r}")
         system("python Vscann.py||python3 Vscann.py")
     elif secim == "h":
         print(f"{clr.am3}[!] Değişiklik yapılmadı{clr.r}")
         write_log("[!] Değişiklik yapılmadı (Ram info)\n")
-        input(f"\n{s}Bir tuşa basın..{r}")
+        input(f"\n{clr.s}Bir tuşa basın..{clr.r}")
         system("python Vscann.py||python3 Vscann.py")
     else:
         print(f"{clr.k}[!] Geçersiz seçim{clr.r}")
