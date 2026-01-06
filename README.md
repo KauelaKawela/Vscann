@@ -36,4 +36,5 @@ Loglama sistemi ile yapılan tüm işlemleri kaydedebilir ve tarama sonuçların
 ## 📌 Kurulum
 ```bash
 git clone https://github.com/KauelaKawela/Vscann.git
-cd Vscann```
+cd Vscann
+```
