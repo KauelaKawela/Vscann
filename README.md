@@ -5,7 +5,8 @@
 - Yasadışı kullanım tamamen kullanıcı sorumluluğundadır.
 - Araç sahibi veya geliştirici hiçbir zarar veya yasa dışı kullanım sonucundan sorumlu değildir.
 - Hedef sistem üzerinde izinsiz testler yapmak yasalara aykırıdır.
-- Kullanıcılar yalnızca kendi laboratuvar ortamlarında veya izinli sistemlerde bu aracı çalıştırmalıdır.**
+- Kullanıcılar yalnızca kendi laboratuvar ortamlarında veya izinli sistemlerde bu aracı çalıştırmalıdır.
+**
 
 
 **Vscann** — Python tabanlı bir **port ve ağ tarama aracı**dır.  
