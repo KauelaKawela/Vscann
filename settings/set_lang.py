@@ -1,22 +1,20 @@
-from settings.set_loging import write_log
-write_log("[#] 'set_lang.py' dosyası çalıştırılı")
-
 import json
 import os
+from settings.set_loging import write_log
+write_log("[&] 'set_lang.py' dosyası çalıştırıldı", level="EXEC")
 from settings import set_themes as clr
-from settings import set_themes as clr
-from os import system
+from func.translations import strings
 
 CONFIG_PATH = "config.json"
 DEFAULT_LANG = "tr"
 
 def load_config():
-    write_log("[#] 'load_config()' fonksiyonu çalıştırıldı [set_lang.py]")
     """Config dosyasını oku, yoksa oluştur"""
+    from settings.set_loging import write_log
+    write_log("[~] 'load_config()' fonksiyonu çalıştırıldı [set_lang.py]", level="FUNC")
     if not os.path.exists(CONFIG_PATH):
         save_config({"lang": DEFAULT_LANG})
-        write_log("[#] config.json dosyası oluşturuldu")
-        write_log("[#] 'lang': 'DEFAULT_LANG' olarak atandı")
+        write_log("[#] config.json dosyası oluşturuldu", level="EXEC")
     with open(CONFIG_PATH, "r") as f:
         try:
             data = json.load(f)
@@ -27,8 +25,9 @@ def load_config():
     return data
 
 def save_config(new_data: dict):
-    write_log("[#] 'save_config()' fonksiyonu çalıştırıldı [set_lang.py]")
     """Config'teki mevcut veriyi koruyarak güncelle"""
+    from settings.set_loging import write_log
+    write_log("[~] 'save_config()' fonksiyonu çalıştırıldı [set_lang.py]", level="FUNC")
     data = {}
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, "r") as f:
@@ -40,28 +39,35 @@ def save_config(new_data: dict):
     with open(CONFIG_PATH, "w") as f:
         json.dump(data, f, indent=4)
 
+def get_lang():
+    config = load_config()
+    return config.get("lang", DEFAULT_LANG)
+
+def get_string(key):
+    lang = get_lang()
+    return strings.get(lang, strings[DEFAULT_LANG]).get(key, key)
+
 def DIL_SEC(secim):
-    diller = {"1": "tr", "2": "en", "3": "de", "4": "fr"}
+    diller = {"1": "tr", "2": "en"}
     secilen = diller.get(secim, DEFAULT_LANG)
     save_config({"lang": secilen})
-    print(f"[#] Dil seçildi: {secilen.upper()}{clr.r}")
-    write_log(f"[#] Dil seçildi: {secilen.upper()}\n")
+    print(f"[#] {get_string('lang_selected')}: {secilen.upper()}{clr.r}")
+    from settings.set_loging import write_log
+    write_log(f"[#] Dil seçildi: {secilen.upper()}\n", level="EXEC")
     return secilen
 
-
 def dil_control():
-    write_log("[#] 'dil_control()' fonksiyonu çalıştırıldı")
+    from settings.set_loging import write_log
+    write_log("[~] 'dil_control()' fonksiyonu çalıştırıldı", level="FUNC")
     secim = input(f"""
-{clr.am5}[1] Türkçe (Varsayılan)
+{clr.am5}[1] Türkçe
 {clr.am4}[2] English
-{clr.am3}[3] Deutsch
-{clr.am2}[4] Français
 
-{clr.am}[$] Seçiminiz: """)
+{clr.am}[$] {get_string('choice')}: """)
     DIL_SEC(secim)
-    write_log(f"[#] [{secim}] seçeneği seçildi (Dil)")
-    input(f"\n{clr.s}Bir tuşa basın..{clr.r}")
-    system("python Vscann.py||python3 Vscann.py")
+    write_log(f"[$] [{secim}] seçeneği seçildi (Dil)", level="EXEC")
+    input(f"\n{clr.s}{get_string('press_any_key')}{clr.r}")
 
+# Initialize
 config = load_config()
 dil = config["lang"].upper()

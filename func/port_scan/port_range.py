@@ -1,83 +1,95 @@
 from settings.set_loging import write_log
-write_log("[#] 'port_range.py' dosyası çalıştırılı")
+write_log("[&] 'port_range.py' dosyası çalıştırıldı")
+from datetime import datetime as dt
 
-import time
 from func.port_scan import ping_control as ping
 from func import helper_func as hf
 from func.port_scan import port_taraması as p_tsı
+from func.port_scan import thread_tarama as t_tara
+from func.port_scan import servis_tespit as st
 from settings import set_themes as clr
+from settings.set_lang import get_string
 
 acık_port=p_tsı.acık_port
 port_list=[]
 
-def port_range():
-        write_log("[#] 'port_range()' fonksiyonu çalıştırıldı")
-        hedef_ip=input(f"{clr.am}[$] Hedef IP adresi: {clr.r}") 
-        write_log(f"[$] Hedef IP adresi: {hedef_ip}")
+def port_range(hedef_ip=None, baslangıc_port=None, bitis_port=None, timeout=0.5, max_workers=None, scanner_func=None, os_discovery=False, verbose=False):
+        write_log("[~] 'port_range()' fonksiyonu çalıştırıldı", level="FUNC")
+        
+        if not hedef_ip:
+            hedef_ip=input(f"{clr.am}[$] {get_string('target_ip')}: {clr.r}") 
+        
+        write_log(f"[$] {get_string('target_ip')}: {hedef_ip}", level="EXEC")
         ping.ping_kontrol(hedef_ip)
-        try:
-            baslangıc_port=int(input(f"{clr.am}[$] Başlangıç portu:{clr.r} "))
-            write_log(f"[$] Başlangıç portu: {baslangıc_port}")
-        except:
-            print(f"{clr.k}[!] Geçersiz başlangıç port girdisi yanlızca sayı!{clr.r}")
-            write_log("[!] Geçersiz başlangıç port girdisi yanlızca sayı!\n")
-            hf.cık()
+        
+        if baslangıc_port is None:
+            try:
+                baslangıc_port=int(input(f"{clr.am}[$] {get_string('start_port')}:{clr.r} "))
+            except:
+                print(f"{clr.k}[!] {get_string('invalid_port')}{clr.r}")
+                write_log(f"[!] {get_string('invalid_port')}\n", level="ERROR")
+                return
+        
+        write_log(f"[$] {get_string('start_port')}: {baslangıc_port}", level="EXEC")
         hf.bas_port_kontrol(baslangıc_port)
-        try:
-            bitis_port=int(input(f"{clr.am}[$] Bitiş portu: {clr.r}"))
-            write_log(f"[$] Bitiş portu: {bitis_port}")
-        except:
-            print(f"{clr.k}[!] Geçersiz bitiş port girdisi yanlızca sayı!{clr.r}")
-            write_log("[!] Geçersiz bitiş port girdisi yanlızca sayı!")
-            hf.cık()
+        
+        if bitis_port is None:
+            try:
+                bitis_port=int(input(f"{clr.am}[$] {get_string('end_port')}: {clr.r}"))
+            except:
+                print(f"{clr.k}[!] {get_string('invalid_port')}{clr.r}")
+                write_log(f"[!] {get_string('invalid_port')}", level="ERROR")
+                return
+                
+        write_log(f"[$] {get_string('end_port')}: {bitis_port}", level="EXEC")
         hf.bit_port_kontrol(bitis_port)
-        try:
-            t_out = float(input(f"{clr.am}[$] İstek atma aralığı (önerilen 0.5 sn): {clr.r}"))
-            write_log(f"[$] İstek atma aralığı (önerilen 0.5 sn): {t_out}")
-        except:
-            print(f"{clr.k}[!] Geçersiz süre girdisi! yanlızca sayı!{clr.r}")
-            write_log("[!] Geçersiz süre girdisi! yanlızca sayı!")
-            hf.cık()
-        if baslangıc_port > bitis_port:     
-            for port in range(bitis_port,baslangıc_port+1):
-                  time.sleep(t_out) # İstek atma aralığı 
-                  p_tsı.port_taraması(hedef_ip,port)
-            print(f"\n\t{clr.y}$$--------------Tarama Tamamlandı--------------$${clr.r}") 
-            write_log("[#] $$--------------Tarama Tamamlandı--------------$$")
-            print(f"\n{clr.am}Toplam taranan:{clr.r} {baslangıc_port-bitis_port + 1} {clr.am}Açık port sayısı:{clr.r} {len(acık_port)}\n{clr.am}Port Aralığı:{clr.r} {bitis_port}-{baslangıc_port}\n{clr.am}Hedef IP:{clr.r} {hedef_ip}")
-            write_log(f"Toplam taranan: {baslangıc_port-bitis_port + 1} | Açık port sayısı: {len(acık_port)} | Port Aralığı: {bitis_port}-{baslangıc_port} | Hedef IP: {hedef_ip}")
-            if not acık_port:
-                print(f"\n{clr.am}[*] Açık portlar:{clr.r} ")
-                write_log("[*] Açık portlar:") 
-                print(f"\t{clr.k}$$------------Açık Port Bulunamadı------------$${clr.r}") 
-                write_log("\t$$------------Açık Port Bulunamadı------------$$")
-                hf.cık()
-            else:
-                print(f"\n{clr.am}[*] Açık portlar:{clr.r} ")
-                write_log("[*] Açık portlar:")
-                for port, servis,son_time,banner in acık_port:
-                    print(f"\t\033[32m[-] Port:{clr.r} {port} - \033[32mServis:{clr.r} {servis} - \033[32mSüre:{clr.r} {son_time} - \033[32mBanner:{clr.r} {banner}") 
-                    write_log(f"\t[-] Port: {port} - Servis: {servis} - Süre: {son_time} - Banner: {banner}")
-                hf.cık()
+        
+        if baslangıc_port > bitis_port:
+            port_listesi = list(range(bitis_port, baslangıc_port+1))
+            toplam = baslangıc_port - bitis_port + 1
+            aralik_str = f"{bitis_port}-{baslangıc_port}"
         else:
-            for port in range(baslangıc_port,bitis_port+1):
-                   time.sleep(t_out) # İstek atma aralığı 
-                   p_tsı.port_taraması(hedef_ip,port)
-            print(f"\n\t{clr.y}$$--------------Tarama Tamamlandı--------------$${clr.r}") # cam göbeği
-            write_log("[#] $$--------------Tarama Tamamlandı--------------$$")
-            print(f"\n{clr.am}Toplam taranan:{clr.r} {bitis_port - baslangıc_port + 1} {clr.am}Açık port sayısı:{clr.r} {len(acık_port)}\n{clr.am}Port Aralığı:{clr.r} {baslangıc_port}-{bitis_port}\n{clr.am}Hedef IP:{clr.r} {hedef_ip}")
-            write_log(f"Toplam taranan: {baslangıc_port-bitis_port + 1} | Açık port sayısı: {len(acık_port)} | Port Aralığı: {bitis_port}-{baslangıc_port} | Hedef IP: {hedef_ip}")
-            if not acık_port:
-                print(f"\n{clr.am}[*] Açık portlar:{clr.r} ") 
-                write_log("[*] Açık portlar:")
-                print(f"\t{clr.k}$$------------Açık Port Bulunamadı------------$${clr.r}") 
-                write_log("\t$$------------Açık Port Bulunamadı------------$$")
-                hf.cık()
-            else:
-                print(f"\n{clr.am}[*] Açık portlar:{clr.r} ")
-                write_log("[*] Açık portlar:")
-                for port, servis,son_time,banner in acık_port:
-                    print(f"\t\033[32m[-] Port:{clr.r} {port} - \033[32mServis:{clr.r} {servis} - \033[32mSüre:{clr.r} {son_time} - \033[32mBanner:{clr.r} {banner}") # koyu yeşil
-                    write_log(f"\t[-] Port: {port} - Servis: {servis} - Süre: {son_time} - Banner: {banner}")
-                hf.cık()
-        write_log("======================================================")
+            port_listesi = list(range(baslangıc_port, bitis_port+1))
+            toplam = bitis_port - baslangıc_port + 1
+            aralik_str = f"{baslangıc_port}-{bitis_port}"
+        
+        # OS Discovery
+        if os_discovery:
+            from func.port_scan import os_discovery as osd
+            osd.print_os_info(hedef_ip)
+
+        # Clear global list
+        p_tsı.acık_port.clear()
+        
+        tsure = dt.now()
+        results = t_tara.thread_port_tarama(hedef_ip, port_listesi, timeout=timeout, max_workers=max_workers, scanner_func=scanner_func or p_tsı.port_taraması)
+        tson_sure = dt.now() - tsure
+        
+        from func import output_handler as oh
+        if verbose:
+            print(f"\n{clr.s}[#] Tüm Port Sonuçları:{clr.r}")
+            for r in results:
+                oh.print_verbose_result(r)
+
+        acık_liste = p_tsı.acık_port
+        
+        print(f"\n\t{clr.y}$$--------------{get_string('scan_completed')}--------------$${clr.r}") 
+        write_log(f"[#] $$--------------{get_string('scan_completed')}--------------$$", level="RESULT")
+        print(f"\n{clr.am}{get_string('total_scanned')}:{clr.r} {toplam} {clr.am}{get_string('open_port_count')}:{clr.r} {len(acık_liste)}\n{clr.am}{get_string('port_range_label')}:{clr.r} {aralik_str}\n{clr.am}{get_string('target_ip')}:{clr.r} {hedef_ip} {clr.am}{get_string('duration')}:{clr.r} {tson_sure}")
+        write_log(f"{get_string('total_scanned')}: {toplam} | {get_string('open_port_count')}: {len(acık_liste)} | {get_string('port_range_label')}: {aralik_str} | {get_string('target_ip')}: {hedef_ip} | {get_string('duration')}: {tson_sure}", level="RESULT")
+        
+        if not acık_liste:
+            print(f"\n{clr.am}[*] {get_string('open_ports_list')}:{clr.r} ")
+            write_log(f"[*] {get_string('open_ports_list')}:", level="RESULT") 
+            print(f"\t{clr.k}$$------------{get_string('no_open_ports')}------------$${clr.r}") 
+            write_log(f"\t$$------------{get_string('no_open_ports')}------------$$", level="RESULT")
+        else:
+            print(f"\n{clr.am}[*] {get_string('open_ports_list')}:{clr.r} ")
+            write_log(f"[*] {get_string('open_ports_list')}:", level="RESULT")
+            print(f"\n\t{clr.s}[~] {get_string('service_detecting')}{clr.r}\n")
+            write_log(f"[~] {get_string('service_detecting')}", level="FUNC")
+            for port, son_time in acık_liste:
+                sonuc = st.servis_tespit(hedef_ip, port)
+                st.sonuc_yazdir(sonuc, son_time)
+        write_log("======================================================", level="EXEC")
+
